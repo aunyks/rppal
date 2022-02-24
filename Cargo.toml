@@ -15,8 +15,7 @@ keywords = ["raspberry", "pi", "embedded-hal", "embedded-hal-impl", "hal"]
 [dependencies]
 libc = "0.2"
 nb = { version = "0.1.1", optional = true }
-embedded-hal-0 = { version = "0.2.6", optional = true, package = "embedded-hal" }
-embedded-hal = { version = "=1.0.0-alpha.5", optional = true }
+embedded-hal = { version = "0.2.6" }
 void = { version = "1.0.2", optional = true }
 spin_sleep = { version = "1.0.0", optional = true }
 
@@ -25,5 +24,5 @@ simple-signal = "1.1.1"
 
 [features]
 default = []
-hal = ["nb", "embedded-hal", "embedded-hal-0", "spin_sleep", "void"]
-hal-unproven = ["nb", "embedded-hal-0/unproven", "hal"]
+hal = ["nb", "spin_sleep", "void"]
+hal-unproven = ["nb"]

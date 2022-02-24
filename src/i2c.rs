@@ -146,11 +146,10 @@ use libc::c_ulong;
 use crate::system;
 use crate::system::{DeviceInfo, Model};
 
-#[cfg(feature = "hal")]
-mod hal;
 mod ioctl;
 
 pub use self::ioctl::Capabilities;
+use embedded_hal::blocking::i2c::{Read as HalRead, Write as HalWrite, WriteRead};
 
 /// Errors that can occur when accessing the I2C peripheral.
 #[derive(Debug)]
@@ -705,3 +704,36 @@ impl I2c {
 // Send is safe for I2c, but we're marked !Send because of the dummy pointer that's
 // needed to force !Sync.
 unsafe impl Send for I2c {}
+
+impl HalWrite for I2c {
+    type Error = Error;
+
+    fn write(&mut self, address: u8, bytes: &[u8]) -> Result<()> {
+        self.set_slave_address(u16::from(address))?;
+        I2c::write(self, bytes)?;
+
+        Ok(())
+    }
+}
+
+impl HalRead for I2c {
+    type Error = Error;
+
+    fn read(&mut self, address: u8, buffer: &mut [u8]) -> Result<()> {
+        self.set_slave_address(u16::from(address))?;
+        I2c::read(self, buffer)?;
+
+        Ok(())
+    }
+}
+
+impl WriteRead for I2c {
+    type Error = Error;
+
+    fn write_read(&mut self, address: u8, bytes: &[u8], buffer: &mut [u8]) -> Result<()> {
+        self.set_slave_address(u16::from(address))?;
+        I2c::write_read(self, bytes, buffer)?;
+
+        Ok(())
+    }
+}

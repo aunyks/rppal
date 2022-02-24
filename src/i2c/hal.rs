@@ -18,11 +18,10 @@
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
-use embedded_hal::i2c::blocking::{Read, Write, WriteRead};
+use embedded_hal::blocking::i2c::{Read, Write, WriteRead};
 
 use super::{Error, I2c};
 
-/// `Write` trait implementation for `embedded-hal` v1.0.0-alpha.5.
 impl Write for I2c {
     type Error = Error;
 
@@ -34,16 +33,6 @@ impl Write for I2c {
     }
 }
 
-/// `Write` trait implementation for `embedded-hal` v0.2.6.
-impl embedded_hal_0::blocking::i2c::Write for I2c {
-    type Error = Error;
-
-    fn write(&mut self, address: u8, bytes: &[u8]) -> Result<(), Self::Error> {
-        Write::write(self, address, bytes)
-    }
-}
-
-/// `Read` trait implementation for `embedded-hal` v1.0.0-alpha.5.
 impl Read for I2c {
     type Error = Error;
 
@@ -55,16 +44,6 @@ impl Read for I2c {
     }
 }
 
-/// `Read` trait implementation for `embedded-hal` v0.2.6.
-impl embedded_hal_0::blocking::i2c::Read for I2c {
-    type Error = Error;
-
-    fn read(&mut self, address: u8, buffer: &mut [u8]) -> Result<(), Self::Error> {
-        Read::read(self, address, buffer)
-    }
-}
-
-/// `WriteRead` trait implementation for `embedded-hal` v1.0.0-alpha.5.
 impl WriteRead for I2c {
     type Error = Error;
 
@@ -78,19 +57,5 @@ impl WriteRead for I2c {
         I2c::write_read(self, bytes, buffer)?;
 
         Ok(())
-    }
-}
-
-/// `WriteRead` trait implementation for `embedded-hal` v0.2.6.
-impl embedded_hal_0::blocking::i2c::WriteRead for I2c {
-    type Error = Error;
-
-    fn write_read(
-        &mut self,
-        address: u8,
-        bytes: &[u8],
-        buffer: &mut [u8],
-    ) -> Result<(), Self::Error> {
-        WriteRead::write_read(self, address, bytes, buffer)
     }
 }

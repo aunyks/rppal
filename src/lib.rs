@@ -39,7 +39,6 @@
 mod macros;
 
 pub mod gpio;
-#[cfg(feature = "hal")]
 pub mod hal;
 pub mod i2c;
 pub mod pwm;
